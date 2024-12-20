@@ -1,101 +1,76 @@
 version: 1
-applications:
-  - frontend:
-      appRoot: frontend
-      runtime:
-        name: Node.js
-        version: 16
-      phases:
-        preBuild:
-          commands:
-            - npm ci
-            - npm install -g eslint
-        build:
-          commands:
-            - npm run lint || true
-            - npm run build
-        postBuild:
-          commands:
-            - npm run test:ci || true
-      artifacts:
-        baseDirectory: frontend/build
-        files:
-          - '**/*'
-      cache:
-        paths:
-          - node_modules/**/*
-  - backend:
-      appRoot: .
-      dependsOn:
-        - frontend
-      runtime:
-        name: Python
-        version: 3.9
-      phases:
-        preBuild:
-          commands:
-            - python -m pip install --upgrade pip
-            - python -m venv .venv
-            - source .venv/bin/activate
-        build:
-          commands:
-            - pip install -r requirements.txt
-            - pip install gunicorn psycopg2-binary
-            - python manage.py collectstatic --no-input
-            - python manage.py migrate
-            - python manage.py check --deploy
-        postBuild:
-          commands:
-            - gunicorn pharmacy_management.wsgi:application --bind 0.0.0.0:8000 --workers 3 --threads 2 --access-logfile - --error-logfile - --capture-output --enable-stdio-inheritance --daemon
-      artifacts:
-        baseDirectory: .
-        files:
-          - '**/*'
-        exclude:
-          - frontend/**/*
-          - node_modules/**/*
-          - README.md
-          - .git/**/*
-          - '**/*.pyc'
-          - '**/__pycache__/**'
-      cache:
-        paths:
-          - .venv/**/*
-      customHeaders:
-        - pattern: '**/*'
-          headers:
-            - key: 'Cache-Control'
-              value: 'max-age=0, no-cache, no-store, must-revalidate'
-            - key: 'Access-Control-Allow-Origin'
-              value: '*'
-            - key: 'Access-Control-Allow-Headers'
-              value: 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-            - key: 'Access-Control-Allow-Methods'
-              value: 'GET, POST, PUT, DELETE, OPTIONS'
-      env:
-        variables:
-          PYTHONPATH: .
-          DJANGO_SETTINGS_MODULE: 'pharmacy_management.settings'
-          DJANGO_DEBUG: 'false'
-          ALLOWED_HOSTS: '*'
-          STATIC_ROOT: 'staticfiles'
-          STATIC_URL: '/static/'
-          MEDIA_ROOT: 'media'
-          MEDIA_URL: '/media/'
-          PORT: '8000'
-          GUNICORN_CMD_ARGS: '--timeout 60 --max-requests 1000 --max-requests-jitter 50'
-          DJANGO_SECURE_SSL_REDIRECT: 'true'
-          DJANGO_SESSION_COOKIE_SECURE: 'true'
-          DJANGO_CSRF_COOKIE_SECURE: 'true'
-          USE_X_FORWARDED_HOST: 'true'
-          USE_X_FORWARDED_PORT: 'true'
-          SECURE_PROXY_SSL_HEADER: 'HTTP_X_FORWARDED_PROTO,https'
-        secrets:
-          DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
-          DATABASE_URL: ${DATABASE_URL}
-      healthCheck:
-        command: curl -f http://localhost:8000/health/ || exit 1
-        interval: 300
-        timeout: 60
-        startPeriod: 60
-        retries: 3
+frontend:
+  appRoot: frontend
+  runtime:
+    name: Node.js
+    version: 16
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+        - npm install -g eslint
+    build:
+      commands:
+        - npm run lint || true
+        - npm run build
+    postBuild:
+      commands:
+        - npm run test:ci || true
+  artifacts:
+    baseDirectory: frontend/build
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+backend:
+  appRoot: .
+  dependsOn:
+    - frontend
+  runtime:
+    name: Python
+    version: 3.9
+  phases:
+    preBuild:
+      commands:
+        - python -m pip install --upgrade pip
+        - python -m venv .venv
+        - source .venv/bin/activate
+    build:
+      commands:
+        - pip install -r requirements.txt
+        - pip install gunicorn psycopg2-binary
+        - python manage.py collectstatic --no-input
+        - python manage.py migrate
+        - python manage.py check --deploy
+    postBuild:
+      commands:
+        - gunicorn pharmacy_management.wsgi:application --bind 0.0.0.0:8000 --workers 3 --threads 2 --access-logfile - --error-logfile - --capture-output --enable-stdio-inheritance --daemon
+  artifacts:
+    baseDirectory: .
+    files:
+      - '**/*'
+    exclude:
+      - frontend/**/*
+      - node_modules/**/*
+      - README.md
+      - .git/**/*
+      - '**/*.pyc'
+      - '**/__pycache__/**'
+  cache:
+    paths:
+      - .venv/**/*
+  customHeaders:
+    - pattern: '**/*'
+      headers:
+        - key: 'Cache-Control'
+          value: 'max-age=0, no-cache, no-store, must-revalidate'
+        - key: 'Access-Control-Allow-Origin'
+          value: '*'
+        - key: 'Access-Control-Allow-Headers'
+          value: 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        - key: 'Access-Control-Allow-Methods'
+          value: 'GET, POST, PUT, DELETE, OPTIONS'
+  env:
+    variables:
+      PYTHONPATH: .
