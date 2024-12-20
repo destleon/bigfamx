@@ -1,0 +1,31 @@
+{% extends 'pharmacy_app/base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center">
+    <h2>Medicines List</h2>
+    <a href="{% url 'add_medicine' %}" class="btn btn-primary">Add Medicine</a>
+</div>
+
+<div class="row mt-4">
+    {% for medicine in medicines %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            {% if medicine.image %}
+                <img src="{{ medicine.image.url }}" class="card-img-top" alt="{{ medicine.name }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ medicine.name }}</h5>
+                <p class="card-text">{{ medicine.description }}</p>
+                <ul class="list-unstyled">
+                    <li><strong>Price:</strong> ${{ medicine.price }}</li>
+                    <li><strong>Stock:</strong> {{ medicine.stock }}</li>
+                    {% if medicine.stock < 10 %}
+                        <li class="text-danger">Low Stock!</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

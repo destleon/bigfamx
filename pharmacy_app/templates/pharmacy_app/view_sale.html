@@ -1,0 +1,20 @@
+{% extends 'pharmacy_app/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Sale Details</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Sale ID: {{ sale.id }}</h5>
+            <p class="card-text">
+                <strong>Medicine:</strong> {{ sale.medicine.name }}<br>
+                <strong>Quantity:</strong> {{ sale.quantity }}<br>
+                <strong>Total Amount:</strong> ${{ sale.total_amount }}<br>
+                <strong>Date:</strong> {{ sale.sale_date }}<br>
+                <strong>Sold By:</strong> {{ sale.attendant.user.username }}
+            </p>
+        </div>
+    </div>
+    <a href="{% url 'sales_report' %}" class="btn btn-secondary mt-3">Back to Sales Report</a>
+</div>
+{% endblock %}

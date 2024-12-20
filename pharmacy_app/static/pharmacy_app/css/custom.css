@@ -1,0 +1,185 @@
+/* Custom styles for the pharmacy app */
+body {
+    background-color: #f0f8ff; /* Light blue background */
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.dashboard-header {
+    margin-bottom: 20px;
+}
+
+.shop-name {
+    font-size: 1.5em;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Navbar customization */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand img {
+    max-height: 40px;
+}
+
+/* Action buttons styling */
+.btn-primary {
+    background-color: #4CAF50;
+    border-color: #45a049;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+    border-color: #3d8b40;
+    transform: translateY(-2px);
+}
+
+.btn-info {
+    background-color: #2196F3;
+    border-color: #1e88e5;
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #1e88e5;
+    border-color: #1976d2;
+    color: white;
+}
+
+/* Card styling */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Alert styling */
+.alert-success {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+}
+
+.alert-danger {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+}
+
+.alert-warning {
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    color: #8a6d3b;
+}
+
+.alert-info {
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #31708f;
+}
+
+/* Table styling */
+.table-dark {
+    background-color: #343a40;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0,0,0,.05);
+}
+
+/* Low stock warning */
+.text-danger {
+    color: #dc3545 !important;
+    font-weight: bold;
+}
+
+/* Dashboard cards */
+.card-title {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.display-4 {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+/* Search container styling */
+.search-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+.search-container input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 0.2rem rgba(76,175,80,.25);
+}
+
+/* Dashboard welcome section */
+.dashboard-header {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.attendant-name {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.shop-name {
+    font-size: 18px;
+    opacity: 0.9;
+}
+.navbar-brand img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.dashboard-header {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.shop-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.attendant-name {
+    font-size: 18px;
+    color: #7f8c8d;
+}
+
+.view-shops-btn {
+    margin-bottom: 20px;
+}
+
+.shops-container {
+    display: none;
+}
+
+.shops-container.show {
+    display: block;
+}

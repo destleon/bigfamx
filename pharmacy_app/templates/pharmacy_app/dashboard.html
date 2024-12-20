@@ -1,0 +1,126 @@
+{% extends 'pharmacy_app/base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Dashboard</h2>
+
+{% if is_admin %}
+    <!-- Admin dashboard content -->
+{% else %}
+    <div class="dashboard-header">
+        <div class="shop-name">{{ attendant.shop.name }}</div>
+    </div>
+    
+    
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card h-100 border-primary">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Quick Search</h5>
+                    <div class="search-container">
+                        <input type="text" id="medicine-search" class="form-control" placeholder="Search medicines...">
+                        <div id="search-results" class="search-results-container" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100 border-success">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-success">Today's Sales</h5>
+                    <p class="display-4 mb-0">${{ today_sales }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+    .search-container {
+        position: relative;
+        max-width: 600px;
+    }
+    .search-results-container {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        z-index: 1000;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    .search-result-item {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    .search-result-item:last-child {
+        border-bottom: none;
+    }
+    </style>
+{% endif %}
+    {% include 'pharmacy_app/shop_list_section.html' %}
+
+    
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card border-warning">
+                <div class="card-body">
+                    <h5 class="card-title text-warning">Low Stock Alert</h5>
+                    <p class="card-text h4">{{ low_stock.count }} items need restocking</p>
+                    {% if low_stock %}
+                    <div class="mt-3">
+                        <a href="{% url 'medicines_list' %}?filter=low_stock" class="btn btn-warning">View Low Stock Items</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-info">
+        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">Recent Sales</h3>
+            <a href="{% url 'sales_report' %}" class="btn btn-light btn-sm">View Full Report</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Medicine</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sale in recent_sales %}
+                        <tr>
+                            <td>{{ sale.medicine.name }}</td>
+                            <td>{{ sale.quantity }}</td>
+                            <td>${{ sale.total_amount }}</td>
+                            <td>{{ sale.sale_date|date:"M d, Y H:i" }}</td>
+                            <td>
+                                <a href="{% url 'view_sale' sale.id %}" class="btn btn-sm btn-outline-info">View</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">No recent sales</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'pharmacy_app/js/dashboard-search.js' %}"></script>
+{% endblock %}

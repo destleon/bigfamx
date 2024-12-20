@@ -1,0 +1,62 @@
+{% extends 'pharmacy_app/base.html' %}
+
+{% block content %}
+<h2>Sales Report</h2>
+
+{% include 'pharmacy_app/sales_report_filter.html' %}
+
+<div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card h-100 border-success">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-success">Total Sales</h5>
+                    <p class="display-4 mb-0">${{ total_amount }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100 border-primary">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">Total Transactions</h5>
+                    <p class="display-4 mb-0">{{ sales.count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="card border-info">
+    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">Sales History</h3>
+        <button class="btn btn-light btn-sm" onclick="window.print()">Print Report</button>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Medicine</th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
+                        <th>Shop</th>
+                        <th>Attendant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sale in sales %}
+                    <tr>
+                        <td>{{ sale.sale_date|date:"Y-m-d H:i" }}</td>
+                        <td>{{ sale.medicine.name }}</td>
+                        <td>{{ sale.quantity }}</td>
+                        <td>${{ sale.total_amount }}</td>
+                        <td>{{ sale.shop.name }}</td>
+                        <td>{{ sale.attendant.get_full_name|default:sale.attendant.username }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

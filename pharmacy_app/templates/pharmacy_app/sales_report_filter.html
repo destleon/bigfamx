@@ -1,0 +1,41 @@
+<form method="get" class="mb-4">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Start Date</label>
+                <input type="date" name="start_date" class="form-control" value="{{ start_date }}">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>End Date</label>
+                <input type="date" name="end_date" class="form-control" value="{{ end_date }}">
+            </div>
+        </div>
+        {% if user.is_superuser %}
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Shop</label>
+                <select name="shop_id" class="form-control">
+                    <option value="">All Shops</option>
+                    {% for shop in shops %}
+                    <option value="{{ shop.id }}">{{ shop.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        {% endif %}
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Attendant</label>
+                <select name="attendant_id" class="form-control">
+                    <option value="">All Attendants</option>
+                    {% for attendant in attendants %}
+                    <option value="{{ attendant.id }}">{{ attendant.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Filter</button>
+</form>
