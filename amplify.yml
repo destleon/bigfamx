@@ -56,8 +56,8 @@ applications:
           - node_modules/**/*
           - README.md
           - .git/**/*
-          - **/*.pyc
-          - **/__pycache__/**
+          - '**/*.pyc'
+          - '**/__pycache__/**'
       cache:
         paths:
           - .venv/**/*
